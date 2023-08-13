@@ -1,0 +1,6 @@
+streamlit
+streamlit
+pandas
+streamlit
+scikit-learn
+tabulate
