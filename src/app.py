@@ -38,22 +38,38 @@ onpromotion = st.selectbox('Enter the promotion status on the selected date, 1 f
 transactions = st.number_input('Enter transactions Amount on the date chosen')
 
 
+num_cols = ['store_nbr', 'onpromotion', 'transactions','transferred', 'oil_prices', 'cluster', 'Year', 'Month', 'DayOfMonth', 'DaysInMonth', 'DayOfYear', 'Week']
+       
+
+cat_cols = ['family', 'holidays_type', 'locale', 'locale_name', 'description','city', 'state', 'store_type']
+
 # Prediction as Executed
 
 if st.button('Predict'):
-    # DataFrame creation
+
+    #DataFrame creation
+    
     df = pd.DataFrame({
-        "date":[date],"oil_prices":[oil_prices], "transactions":[transactions], "onpromotion":[onpromotion]
+        "date":[date],"oil_prices":[oil_prices], "transactions":[transactions], "onpromotion":[onpromotion], 
     })
+    
+   
+    #df = pd.DataFrame[num_cols + cat_cols]
+    
+    #df = pd.DataFrame(columns=['store_nbr', 'onpromotion', 'transactions','transferred', 'oil_prices', 'cluster', 'Year', 'Month', 
+                               #'DayOfMonth', 'DaysInMonth', 'DayOfYear', 'Week', 'family', 'holidays_type', 'locale', 'locale_name', 
+                               #'description','city', 'state', 'store_type'])
+    
     print(f"[Info]Input data as dataframe:\n{df.to_markdown()}")
     
 # ML PART
-output = end2end_pipeline.predict()
+output = end2end_pipeline.predict(df)
 
 ## store confidence score/probability for the predicted class
 df['confidence score'] = output.max(axis=-1)
 
 # store index then replace by the matching label
+
 df['predicted label'] = predicted_idx
 predicted_label = df['predicted label'].replace(idx_to_labels)
 df['predicted label'] = predicted_label
