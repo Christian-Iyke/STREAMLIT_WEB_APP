@@ -38,10 +38,10 @@ onpromotion = st.selectbox('Enter the promotion status on the selected date, 1 f
 transactions = st.number_input('Enter transactions Amount on the date chosen')
 
 
-num_cols = ['store_nbr', 'onpromotion', 'transactions','transferred', 'oil_prices', 'cluster', 'Year', 'Month', 'DayOfMonth', 'DaysInMonth', 'DayOfYear', 'Week']
+#num_cols = ['store_nbr', 'onpromotion', 'transactions','transferred', 'oil_prices', 'cluster', 'Year', 'Month', 'DayOfMonth', 'DaysInMonth', 'DayOfYear', 'Week']
        
 
-cat_cols = ['family', 'holidays_type', 'locale', 'locale_name', 'description','city', 'state', 'store_type']
+#cat_cols = ['family', 'holidays_type', 'locale', 'locale_name', 'description','city', 'state', 'store_type']
 
 # Prediction as Executed
 
@@ -49,31 +49,38 @@ if st.button('Predict'):
 
     #DataFrame creation
     
-    df = pd.DataFrame({
-        "date":[date],"oil_prices":[oil_prices], "transactions":[transactions], "onpromotion":[onpromotion], 
-    })
+    #df = pd.DataFrame({
+        #"date":[date],"oil_prices":[oil_prices], "transactions":[transactions], "onpromotion":[onpromotion], 
+    #})
     
-   
-    #df = pd.DataFrame[num_cols + cat_cols]
     
     #df = pd.DataFrame(columns=['store_nbr', 'onpromotion', 'transactions','transferred', 'oil_prices', 'cluster', 'Year', 'Month', 
                                #'DayOfMonth', 'DaysInMonth', 'DayOfYear', 'Week', 'family', 'holidays_type', 'locale', 'locale_name', 
-                               #'description','city', 'state', 'store_type'])
+                               #'description','city', 'state', 'store_type','Unnamed: 0_x', 'Unnamed: 0_y', 'Unnamed: 0'])
+    
+    
+    df = pd.DataFrame({'date':[date], 'store_nbr':[store_nbr], 'onpromotion':[onpromotion], 'transactions':[transactions],
+                               'transferred':[transfered], 'oil_prices':[oil_prices], 'cluster':[cluster], 'Year':[Year], 'Month':[Month], 
+                               'DayOfMonth':[DayOfMonth], 'DaysInMonth':[DaysInMonth], 'DayOfYear':[DayOfMonth], 'Week':[Week], 'family':[family], 
+                               'holidays_type':[holidays_type], 'locale':[locale], 'locale_name':[locale_name], 
+                               'description':[description],'city':[city], 'state':[state], 'store_type':[store_type]
+                               })
+    
     
     print(f"[Info]Input data as dataframe:\n{df.to_markdown()}")
     
 # ML PART
-output = end2end_pipeline.predict(df)
+    output = end2end_pipeline.predict(df)
 
 ## store confidence score/probability for the predicted class
-df['confidence score'] = output.max(axis=-1)
+    df['confidence score'] = output.max(axis=-1)
 
 # store index then replace by the matching label
 
-df['predicted label'] = predicted_idx
-predicted_label = df['predicted label'].replace(idx_to_labels)
-df['predicted label'] = predicted_label
+    df['predicted label'] = predicted_idx
+    predicted_label = df['predicted label'].replace(idx_to_labels)
+    df['predicted label'] = predicted_label
 
-print(f'[Info] Input dataframe with prediction :\n{df.to_markdown()}')
+    print(f'[Info] Input dataframe with prediction :\n{df.to_markdown()}')
     
-st.text(f"The Total Sales for the chosen date is : '{predicted_label[0]}' .")
+#st.text(f"The Total Sales for the chosen date is : '{}' .")
